@@ -54,13 +54,13 @@ loginform.addEventListener('submit',function(e){
   let password = qs('.login [type="password"]').value
   if(!username||!password) return alert('请输入内容')
   // console.log(username,password);
-  axios.post('/api/login',{username,password}).then(({data:{code,message}})=>{
-    // console.log(res);
+  axios.post('/api/login',{username,password}).then(({data:{code,message,token}})=>{
+   
     if(code===0){
       alert(message)
-      qs('.login .mb-3 a').click()
       loginform.reset()
-      location.href='../../index.html'
+      localStorage.setItem('token',token)
+      location.href='./index.html'
     }else{
       alert(message)
 

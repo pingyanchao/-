@@ -1,3 +1,6 @@
+if(!localStorage.getItem('token')){
+  location.href='./login.html'
+}
 // ======================= 所有菜单切换时加背景色 ======================= 
 qsAll('.nav li a').forEach((item, index) => {
   item.onclick = function () {

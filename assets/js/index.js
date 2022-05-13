@@ -22,3 +22,19 @@ qs('.right a').addEventListener('click', function () {
 
 // todo ======================= 初始化数据 =======================
 // 初始化数据
+qs('.init').onclick = function () {
+  axios
+    .get('/init/data', {
+      // headers: {
+      //   Authorization: localStorage.getItem('token'),
+      // },
+    })
+    .then((res) => {
+      let { code, message } = res.data
+      if (code === 0) {
+        alert(message)
+      } else {
+        alert(message)
+      }
+    })
+}

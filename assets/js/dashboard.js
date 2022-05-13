@@ -1,8 +1,51 @@
 // todo ======================= 图表概览 =======================
-
+axios('/student/overview', {
+  // herders: {
+  //   Authorization: localStorage.getItem('token'),
+  // },
+}).then(({ data: res }) => {
+  // console.log(res)
+  const { code, data } = res
+  if (code === 0) {
+    const { avgAge, avgSalary, proportion, total } = data
+    qs('.total').innerHTML = total
+    qs('.avgSalary').innerHTML = avgSalary
+    qs('.avgAge').innerHTML = avgAge
+    qs('.proportion').innerHTML = proportion
+  } else {
+    alert('请初始化数据')
+  }
+})
+axios(
+  '/student/list'
+  // {
+  //   herders: {
+  //     Authorization: localStorage.getItem('token'),
+  //   },
+  // }
+).then(({ data: { code, message, data } }) => {
+  if (code === 0) {
+    renderline(data)
+    renderpie(data)
+  }
+})
 // todo ======================= 饼图 =======================
 
-{
+function renderpie(data) {
+  console.log(data)
+  let arr = []
+  data.forEach((item) => {
+    let obj = arr.find((i) => i.name === item.province)
+    console.log(obj)
+    if (obj) {
+      console.log(11)
+      obj.value++
+    } else {
+      arr.push({ name: item.province, value: 1 })
+      console.log(222)
+    }
+  })
+  console.log(arr)
   const mychart = echarts.init(qs('.pie'))
   let option = {
     title: {
@@ -10,7 +53,7 @@
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b} : {c} ({d}%)',
+      formatter: '{a} <br/>{b} : {c}人 ({d}%)',
     },
     series: [
       {
@@ -140,7 +183,7 @@
   mychart.setOption(option)
 }
 // todo  ======================= 折线图 =======================
-{
+function renderline(data) {
   const mychart = echarts.init(qs('.line'))
   let option = {
     title: {
@@ -148,7 +191,7 @@
     },
     xAxis: {
       boundaryGap: false,
-      data: ['张三', '李四', '张飞', '赵云', '狗哥', '张三', '李四', '张飞', '赵云', '狗哥', '张三', '李四', '张飞', '赵云', '狗哥', '张三', '李四', '张飞', '赵云', '狗哥'],
+      data: data.map((item) => item.name),
     },
     yAxis: {
       boundaryGap: [0, '100%'],
@@ -159,14 +202,14 @@
         type: 'line',
         smooth: true,
         symbol: 'none',
-        data: [9600, 15000, 17000, 12000, 8300, 9600, 15000, 17000, 12000, 8300, 9600, 15000, 17000, 12000, 8300, 9600, 15000, 17000, 12000, 13000],
+        data: data.map((item) => item.salary),
       },
       {
         name: '实际薪资',
         type: 'line',
         smooth: true,
         symbol: 'none',
-        data: [8300, 9600, 15000, 17000, 12000, 8300, 9600, 15000, 17000, 12000, 8300, 9600, 15000, 17000, 12000, 8300, 9600, 15000, 17000, 12000],
+        data: data.map((item) => item.truesalary),
       },
     ],
     legend: {},

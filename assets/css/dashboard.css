@@ -93,6 +93,11 @@ h1 {
   cursor: pointer;
 }
 
+.title:hover ul{
+  
+    display: block
+  
+}
 ul {
   list-style: none;
   font-size : 12px;
